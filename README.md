@@ -1,8 +1,15 @@
 # Node.js Learning Progress 🚀
+![status](https://img.shields.io/badge/learning-daily-blue)
+![stack](https://img.shields.io/badge/Node.js-JavaScript-success)
+![commit](https://img.shields.io/github/last-commit/Manavsheth78/Nodejs_learningProgress)
+
+
 
 > Tracking my daily backend learning journey, building small projects, and improving 1% every day.
 
 ---
+
+
 
 ## 📂 Repo Structure
 - `/PiyushGarg_playlist` – code written while following the Node.js YouTube playlist from piyush grag !
