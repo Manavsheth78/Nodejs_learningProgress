@@ -37,6 +37,9 @@ app.get("/users", (req, res) => {
 //API ROUTE
 app.get("/api/users", (req, res) => {
   // console.log(req.myUserName);
+  res.setHeader("MyName", "Manav Sheth");
+  console.log(req.headers);
+
   return res.json(users);
 });
 
@@ -77,6 +80,7 @@ app
   .get((req, res) => {
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
+    if (!user) return res.status(404).json({ error: "User not found" });
     return res.json(user);
   })
   .patch((req, res) => {
@@ -112,6 +116,16 @@ app
 app.post("/api/users", (req, res) => {
   //Todo: create a new user
   const body = req.body;
+  if (
+    !body ||
+    !body.first_name ||
+    !body.last_name ||
+    !body.email ||
+    !body.gender ||
+    !body.job_title
+  ) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
   // const newUser = { ...body, id: users.length + 1 };
   users.push({ ...body, id: users.length + 1 }); //? we are not using stringfy coz we are puushing the code javacript in memory so it should be in object format not in string format while we use in the writeFile method coz we are storing in the disk.
 
@@ -119,7 +133,7 @@ app.post("/api/users", (req, res) => {
 
   //? we wrote this coz we need to push our data to the existing array of objects file that we have , instead if we use the fs.appendFile method it will add the data at the end of the file and it will not be in the form of array of objects. we need to add the data before the closing square bracket of the array of objects. ']'
   fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-    return res.json({ status: "success", id: users.length });
+    return res.status(201).json({ status: "success", id: users.length });
   });
 
   //? Moreover we also need to update the file not just in the Ram but we also need to locally so when the server restarts we have the data  there so for that we use the fs module of node js
