@@ -1,6 +1,26 @@
 const express = require("express");
 const users = require("./MOCK_DATA.json"); //*taking the data from json file (as we don't have a database yet)
 const app = express();
+const fs = require("fs");
+
+//*MIDDLEWARES
+app.use(express.urlencoded({ extended: false }));
+
+app.use((req, res, next) => {
+  fs.appendFile(
+    "log.txt",
+    ` \n ${new Date().toISOString()} ::  ${req.url} : ${req.ip}  \n`,
+    (err, data) => {
+      next();
+    }
+  );
+});
+
+app.use((req, res, next) => {
+  console.log("hello from middleware  2 ");
+  // req.myUserName = "Manav";
+  next();
+});
 
 const port = 8000;
 
@@ -16,6 +36,7 @@ app.get("/users", (req, res) => {
 
 //API ROUTE
 app.get("/api/users", (req, res) => {
+  // console.log(req.myUserName);
   return res.json(users);
 });
 
@@ -59,17 +80,49 @@ app
     return res.json(user);
   })
   .patch((req, res) => {
-    //Todo: update the user with id = id
-    return res.json({ status: "pending" });
+    // Update the user with id = id
+    const id = Number(req.params.id);
+    const userIndex = users.findIndex((user) => user.id === id);
+    if (userIndex === -1) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    // Update user fields with request body
+    users[userIndex] = { ...users[userIndex], ...req.body };
+    // Persist changes to file
+    fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to update user" });
+      }
+      return res.json(users[userIndex]);
+    });
   })
   .delete((req, res) => {
     //Todo: delete the user with id = id
-    return res.json({ status: "pending" });
+    const id = Number(req.params.id);
+    const userIndex = users.findIndex((user) => user.id === id);
+    if (userIndex === -1) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    users.splice(userIndex, 1); //? 1 is used to delete only one element from that index
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err, data) => {
+      return res.send({ status: "success" });
+    });
   });
 
 app.post("/api/users", (req, res) => {
   //Todo: create a new user
-  return res.json({ status: "pending" });
+  const body = req.body;
+  // const newUser = { ...body, id: users.length + 1 };
+  users.push({ ...body, id: users.length + 1 }); //? we are not using stringfy coz we are puushing the code javacript in memory so it should be in object format not in string format while we use in the writeFile method coz we are storing in the disk.
+
+  //? ALso we can even wrote only body in inside the push method but by that the id will not be added to the new user object so for that we can use the spread operator to add the id property to the new user object
+
+  //? we wrote this coz we need to push our data to the existing array of objects file that we have , instead if we use the fs.appendFile method it will add the data at the end of the file and it will not be in the form of array of objects. we need to add the data before the closing square bracket of the array of objects. ']'
+  fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err, data) => {
+    return res.json({ status: "success", id: users.length });
+  });
+
+  //? Moreover we also need to update the file not just in the Ram but we also need to locally so when the server restarts we have the data  there so for that we use the fs module of node js
 });
 
 app.listen(port, () => {
