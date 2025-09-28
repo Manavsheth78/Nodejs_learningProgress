@@ -19,8 +19,9 @@
 ---
 
 ## ✅ Current Status
-- Reached **Video 13** of the Node.js playlist
-- Started building my first REST API (users CRUD, error handling)
+- Reached **Video 17** of the Node.js playlist
+- Implemented basic **CRUD** (create/read/update/delete)
+- Next: **mongoDB**, **mongoose**, **MVC Pattern**, and starting the **Notes CLI** skeleton
 
 ---
 
@@ -30,7 +31,6 @@
 
 Next up:  
 - [ ] JWT authentication with Postgres  
-- [ ] MIDDLEWARE
 - [ ] SSR
 - [ ] FILE UPLOAD
 - [ ] COOKIES
@@ -40,7 +40,11 @@ Next up:
 ## 📊 Progress Tracking
 I’m documenting daily progress with charts:
 
-<img width="1320" height="793" alt="Progress_Day1_Day6" src="https://github.com/user-attachments/assets/7a73b770-a2cd-487a-a1b2-62b0ec99f9e7" />
+<img width="1320" height="793" alt="Progress_Day1_Day6" src="https://github.com/user-attachments/assets/7a73b770-a2cd-487a-a1b2-62b0ec99f9e7" >
+
+## then current (09/28) 
+<img width="1600" height="1000" alt="Progress_Day1_Day8" src="https://github.com/user-attachments/assets/b33a5405-079c-47cb-b77a-7a43fcd1fbb7" />
+
 
 ---
 
