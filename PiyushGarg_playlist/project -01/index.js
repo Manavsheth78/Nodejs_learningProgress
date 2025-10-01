@@ -72,7 +72,7 @@ app.post("/api/users", (req, res) => {
 
 */
 
-//* chaining the methods with same path parameter
+//* chaining the methods with same path parameter.
 //:id is a path parameter which will be dynamic to find all the users with different ids
 
 app
